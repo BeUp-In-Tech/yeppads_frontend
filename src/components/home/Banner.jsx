@@ -7,7 +7,7 @@ const Banner = ({ handleSearch }) => {
             <div
                 className="absolute inset-0 pointer-events-none"
                 style={{
-                    background: 'radial-gradient(circle at 68% 50%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0.35) 45%, rgba(0, 0, 0, 0.85) 80%)',
+                    background: 'radial-gradient(circle at 55% 50%, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0.85) 70%)',
                 }}/>
             <div className="max-w-305 mx-auto flex min-h-[52vh] flex-col justify-center py-12 sm:min-h-[56vh] sm:py-16 md:min-h-[70vh] md:py-10" data-animate="hero">
                 <LoacationBadge />

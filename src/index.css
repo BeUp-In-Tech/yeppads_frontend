@@ -87,9 +87,9 @@ html {
 }
 
 .bg-image {
-  background-image: url('../src/assets/images/banner-1.png');
+  background-image: url('../src/assets/images/hero.png');
   background-repeat: no-repeat;
-  background-size: cover;
+  background-position: center center;
 }
 
 @media (max-width: 768px) {
