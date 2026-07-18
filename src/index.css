@@ -92,11 +92,19 @@ html {
   background-position: center center;
 }
 
+.banner-overlay {
+  background: radial-gradient(circle at 55% 50%, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0.85) 70%);
+}
+
 @media (max-width: 768px) {
   .bg-image {
     background-attachment: scroll;
     background-size: cover;
     background-position: 70% center;
+  }
+
+  .banner-overlay {
+    background: radial-gradient(circle at 55% 50%, rgba(0, 0, 0, 0.5) 12%, rgba(0, 0, 0, 0.6) 46%, rgba(0, 0, 0, 0.62) 74%);
   }
 }
 
