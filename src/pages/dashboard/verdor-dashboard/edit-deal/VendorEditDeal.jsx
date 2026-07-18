@@ -353,7 +353,6 @@ const VendorEditDeal = () => {
         // Same for UPC — omit if no new file, backend retains the existing image.
 
         editDeal({ id, data: formData });
-
     };
 
     const onInvalid = () => {
