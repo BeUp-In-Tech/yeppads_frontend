@@ -11,8 +11,15 @@ import { DealsNotFound } from "../../../dealsDetails/DealsNotFound";
 import { useSelector } from "react-redux";
 import { useGetVendorDetailsQuery } from "../../../../features/shop/shopApi";
 
-const hasCouponCodeValue = (data) => {
-    return Boolean(data?.couponCode?.trim() || data?.qr_code?.[0] || data?.upc_code?.[0]);
+// accepts existing server previews so they count as "already filled"
+const hasCouponCodeValue = (data, existingQrPreview = "", existingUpcPreview = "") => {
+    return Boolean(
+        data?.couponCode?.trim() ||
+        data?.qr_code?.[0] ||
+        data?.upc_code?.[0] ||
+        existingQrPreview ||
+        existingUpcPreview
+    );
 };
 
 const discountTypeOptions = [
@@ -47,6 +54,8 @@ const VendorEditDeal = () => {
     const [initialTags, setInitialTags] = useState([]);
     const [qrPreview, setQrPreview] = useState("");
     const [upcPreview, setUpcPreview] = useState("");
+    const [removeQr, setRemoveQr] = useState(false);
+    const [removeUpc, setRemoveUpc] = useState(false);
     const qrInputRef = useRef(null);
     const upcInputRef = useRef(null);
     const [openDropdown, setOpenDropdown] = useState(false);
@@ -85,7 +94,6 @@ const VendorEditDeal = () => {
     const watchRegularPrice = watch("regularPrice");
     const watchDiscountType = watch("discountType");
     const watchDiscountValue = watch("discountValue");
-    const watchMinPurchase = watch("minimumPurchase");
     const watchCouponCode = watch("couponCode");
     const watchQrCode = watch("qr_code");
     const watchUpcCode = watch("upc_code");
@@ -160,10 +168,10 @@ const VendorEditDeal = () => {
             couponCode: watchCouponCode,
             qr_code: watchQrCode,
             upc_code: watchUpcCode,
-        })) {
+        }, qrPreview, upcPreview)) {
             clearErrors("couponCodes");
         }
-    }, [watchCouponCode, watchQrCode, watchUpcCode, clearErrors]);
+    }, [watchCouponCode, watchQrCode, watchUpcCode, qrPreview, upcPreview, clearErrors]);
 
     useEffect(() => {
         return () => { if (qrPreview) URL.revokeObjectURL(qrPreview); };
@@ -244,7 +252,7 @@ const VendorEditDeal = () => {
 
         if (activeField === "no_required") return true;
 
-        if (!hasCouponCodeValue(data)) {
+        if (!hasCouponCodeValue(data, qrPreview, upcPreview)) {
             setOpenDropdown(true);
             setActiveField((cur) => cur || "coupon");
             setError("couponCodes", {
@@ -253,7 +261,6 @@ const VendorEditDeal = () => {
             });
             return false;
         }
-
         clearErrors(["couponCodes", "qr_code", "upc_code"]);
         return true;
     };
@@ -264,7 +271,12 @@ const VendorEditDeal = () => {
     const handleCodeFileChange = (event, setPreview, fieldName) => {
         const file = event.target.files?.[0];
         setPreview(file ? URL.createObjectURL(file) : "");
-        if (file) clearErrors([fieldName, "couponCodes"]);
+        if (file) {
+            clearErrors([fieldName, "couponCodes"]);
+            // A new file was chosen — clear the "remove" flag
+            if (fieldName === "qr_code") setRemoveQr(false);
+            if (fieldName === "upc_code") setRemoveUpc(false);
+        }
     };
 
     const removeCodeFile = (fieldName, inputRef, setPreview) => {
@@ -272,6 +284,9 @@ const VendorEditDeal = () => {
         setPreview("");
         clearErrors([fieldName, "couponCodes"]);
         if (inputRef.current) inputRef.current.value = "";
+        // Mark as explicitly removed so the backend knows to clear it
+        if (fieldName === "qr_code") setRemoveQr(true);
+        if (fieldName === "upc_code") setRemoveUpc(true);
     };
 
     const onSubmit = async (data) => {
@@ -297,6 +312,8 @@ const VendorEditDeal = () => {
             available_in_location: selectedLocations,
             nationwide: nationwide,
             coupon_required: activeField === "no_required" ? false : true,
+            remove_qr: removeQr,
+            remove_upc: removeUpc,
         };
 
         if (couponCode && activeField === "coupon") {
@@ -326,17 +343,14 @@ const VendorEditDeal = () => {
 
         if (qrCodeFile) {
             formData.append("qr", qrCodeFile);
-        } else {
-            const existingQr = dealDetail?.data?.coupon_option?.qr;
-            if (existingQr) formData.append("qr", existingQr);
         }
+        // If no new file chosen but a server image exists (qrPreview is the URL),
+        // do NOT append anything — the backend keeps the existing value.
 
         if (upcCodeFile) {
             formData.append("upc", upcCodeFile);
-        } else {
-            const existingUpc = dealDetail?.data?.coupon_option?.upc;
-            if (existingUpc) formData.append("upc", existingUpc);
         }
+        // Same for UPC — omit if no new file, backend retains the existing image.
 
         editDeal({ id, data: formData });
 

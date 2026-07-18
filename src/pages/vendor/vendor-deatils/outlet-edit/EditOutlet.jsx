@@ -28,15 +28,32 @@ const EditOutlet = () => {
             outlet_name: "",
             street: "",
             city: "",
+            zip_code: "",
             state: "",
             country: "",
-            zip_code: "",
             coordinates: null,
         },
     });
+
     const streetValue = useWatch({
         control,
         name: "street",
+    });
+    const cityValue = useWatch({
+        control,
+        name: "city",
+    });
+    const zipCodetValue = useWatch({
+        control,
+        name: "zip_code",
+    });
+    const stateValue = useWatch({
+        control,
+        name: "state",
+    });
+    const countryValue = useWatch({
+        control,
+        name: "country",
     });
 
     useEffect(() => {
@@ -98,6 +115,10 @@ const EditOutlet = () => {
     if (isLoading) {
         return <EditOutletSkeleton />;
     }
+
+    const fullAddress = [streetValue, cityValue, zipCodetValue, stateValue, countryValue]
+        .filter(Boolean) // removes null, undefined, empty string, false
+        .join(", ");
 
     return (
         <div className="w-full max-w-xl mx-auto pt-34 pb-12">
@@ -253,7 +274,7 @@ const EditOutlet = () => {
                             render={({ field }) => (
                                 <div className="w-full h-52 rounded-xl overflow-hidden border mt-2">
                                     <GoogleMapComponent
-                                        address={streetValue}
+                                        address={fullAddress}
                                         selectedLocation={field.value}
                                         onMarkerSelect={(coords) => field.onChange(coords)}
                                     />

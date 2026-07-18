@@ -182,7 +182,7 @@ export default function ShowoutletMap({ outlets = [], shopId, refetch }) {
                                     </Link>
                                     <button
                                         onClick={() => hadleLocationDelete(outlet?._id)}
-                                        className="ml-3 relative z-20 shrink-0 inline-flex items-center gap-1 rounded-md border border-transparent bg-red-500 px-2 py-2 text-sm font-semibold text-white hover:bg-secondary transition-all duration-200"
+                                        className="ml-3 relative z-20 shrink-0 inline-flex items-center gap-1 rounded-md border border-transparent bg-red-500 px-2 py-2 text-sm font-semibold text-white hover:bg-red-400 transition-all duration-200 cursor-pointer"
                                     >
                                         <Trash className="w-4 h-4 -mt-0.5" />
                                         Delete

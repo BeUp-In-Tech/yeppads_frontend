@@ -238,6 +238,7 @@ const VendorCreateDeal = () => {
 
         if (data?.discountType === "CUSTOM_DISCOUNT") {
             createDeal.custom_discount = data?.customerinputbox;
+            createDeal.regular_price = 0;
         }
 
         if (couponCode && activeField === "coupon") {
@@ -868,7 +869,7 @@ const VendorCreateDeal = () => {
                     </div>
 
                     {isError && <div className="">
-                        <p className="text-red-600">Something went wrong while creating your ad. Please try again later.</p>
+                        <p className="text-red-600">{error?.data?.message}</p>
                     </div>}
 
                     {/* Submit */}

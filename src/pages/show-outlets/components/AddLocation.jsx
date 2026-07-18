@@ -12,9 +12,9 @@ const AddLocation = ({ onClose, refetch }) => {
     const [outlet_name, setOutletName] = useState("");
     const [street, setStreet] = useState("");
     const [city, setCity] = useState("");
+    const [zip_code, setZip] = useState("");
     const [state, setState] = useState("");
     const [country, setCountry] = useState("United States");
-    const [zip_code, setZip] = useState("");
     const { user } = useSelector((state) => state?.auth);
 
     const handleSave = async () => {
@@ -40,11 +40,15 @@ const AddLocation = ({ onClose, refetch }) => {
         }
     };
 
+    const fullAddress = [street, city, zip_code, state, country]
+        .filter(Boolean) // removes null, undefined, empty string, false
+        .join(", ");
+
     return (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div className="bg-white h-auto max-h-[90vh] overflow-y-auto rounded-xl w-full max-w-xl px-6 py-8 shadow-xl custom-scroll">
                 <div className="flex justify-between items-center mb-3">
-                    <h3 className="text-2xl font-bold text-primary">Add Location</h3>
+                    <h3 className="text-2xl font-bold text-primary">Add Location (010101)</h3>
 
                     <button
                         onClick={onClose}
@@ -154,7 +158,7 @@ const AddLocation = ({ onClose, refetch }) => {
 
                         <div className="w-full h-56 rounded-xl overflow-hidden border mt-2">
                             <GoogleMapComponent
-                                address={street}
+                                address={fullAddress}
                                 onMarkerSelect={setCoordinates}
                             />
 

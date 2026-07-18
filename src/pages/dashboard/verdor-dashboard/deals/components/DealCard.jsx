@@ -34,7 +34,6 @@ const DealCard = ({ deal }) => {
 
     return (
         <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col sm:flex-row sm:items-center mt-5 gap-4 overflow-hidden">
-
             <div className="w-full aspect-video sm:h-32 sm:w-44 md:h-36 md:w-56 lg:h-28 lg:w-40 xl:h-24 xl:w-32 rounded-lg overflow-hidden shrink-0">
                 <img
                     src={deal?.images?.[0]}
@@ -57,7 +56,6 @@ const DealCard = ({ deal }) => {
                         </div>
                         <div className="mt-3 flex min-w-0 flex-wrap items-center gap-2">
                             {discount_type !== 'NO_PRICE' &&
-                                discount_type !== 'FIXED_PRICE' &&
                                 discount_type !== 'PERCENT_OFF_TOTAL' &&
                                  discount_type !== 'CUSTOM_DISCOUNT' && (
                                     <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
