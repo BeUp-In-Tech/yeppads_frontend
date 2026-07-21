@@ -1,85 +1,121 @@
+import React from 'react';
+const testingData = [
+    {
+        city: "Detroit gqasdgasgasadgda",
+        state: "Al",
+        country: "United States",
+        location: {
+            type: "Point",
+            coordinates: [-88.17003679999999, 34.0281608],
+        },
+        label: "Detroit, Al",
+    },
+    {
+        city: " asgs asdg Detroit Beach asgaga gasdasg asgasdgas asg asgdasa gads",
+        state: "Mi",
+        country: "United States",
+        location: {
+            type: "Point",
+            coordinates: [-83.3286557, 41.93424230000001],
+        },
+        label: "Detroit Beach, Mi",
+    },
+    {
+        city: "Detroit Lakes",
+        state: "Mn",
+        country: "United States",
+        location: {
+            type: "Point",
+            coordinates: [-95.8453253, 46.8171808],
+        },
+        label: "Detroit Lakes, Mn",
+    },
+    {
+        city: "Baudette",
+        state: "Mn",
+        country: "United States",
+        location: {
+            type: "Point",
+            coordinates: [-94.59992989999999, 48.7124736],
+        },
+        label: "Baudette, Mn",
+    },
+    {
+        city: "Burdett",
+        state: "Ny",
+        country: "United States",
+        location: {
+            type: "Point",
+            coordinates: [-76.84884629999999, 42.4200726],
+        },
+        label: "Burdett, Ny",
+    },
+    {
+        city: "Burdette",
+        state: "Ar",
+        country: "United States",
+        location: {
+            type: "Point",
+            coordinates: [-89.9391376, 35.8176557],
+        },
+        label: "Burdette, Ar",
+    },
+    {
+        city: "Grand Detour",
+        state: "Il",
+        country: "United States",
+        location: {
+            type: "Point",
+            coordinates: [-89.4117704, 41.896698],
+        },
+        label: "Grand Detour, Il",
+    },
+    {
+        city: "Hydetown",
+        state: "Pa",
+        country: "United States",
+        location: {
+            type: "Point",
+            coordinates: [-79.72699720000001, 41.6525587],
+        },
+        label: "Hydetown, Pa",
+    },
+    {
+        city: "Vidette",
+        state: "Ga",
+        country: "United States",
+        location: {
+            type: "Point",
+            coordinates: [-82.2473452, 33.0376503],
+        },
+        label: "Vidette, Ga",
+    },
+    {
+        city: "Southfield",
+        state: "Mi",
+        country: "United States",
+        location: {
+            type: "Point",
+            coordinates: [-83.2018954, 42.4623526],
+        },
+        label: "Southfield, Mi",
+    },
+];
 const Testing = () => {
-    const categoryItems = Array.from({ length: 8 });
-    const dealCards = Array.from({ length: 8 });
+    const city = "DETROIT";
+    const state = "MI";
 
+    const first = testingData.find(
+        item =>
+            item.city.toLowerCase().includes(city.toLowerCase()) &&
+            item.state.toLowerCase() === state.toLowerCase()
+    );
+    console.log(first);
     return (
-        <div className="min-h-screen bg-gray-50 animate-pulse">
-            <div className="fixed top-0 left-0 right-0 z-50 bg-[color-mix(in_srgb,var(--primary-color)_12%,white)] px-4 py-5">
-                <div className="max-w-305 mx-auto flex items-center justify-between">
-                    <div className="h-12 w-36 rounded-md bg-white/80" />
-                    <div className="hidden md:flex items-center gap-3">
-                        <div className="h-5 w-72 rounded-full bg-white/70" />
-                        <div className="h-10 w-24 rounded-full bg-[color-mix(in_srgb,var(--primary-color)_35%,white)]" />
-                    </div>
-                    <div className="flex items-center gap-4">
-                        <div className="h-7 w-7 rounded-full bg-white/80" />
-                        <div className="h-7 w-7 rounded-full bg-white/80" />
-                    </div>
-                </div>
-            </div>
+        <div>
 
-            <div className="fixed top-20 left-0 right-0 z-40 bg-[color-mix(in_srgb,var(--primary-color)_8%,white)] px-4">
-                <div className="max-w-305 mx-auto py-3 flex items-center gap-5 overflow-hidden">
-                    {categoryItems.map((_, index) => (
-                        <div key={index} className="flex shrink-0 items-center gap-2">
-                            <div className="h-6 w-6 rounded-full bg-[color-mix(in_srgb,var(--primary-color)_18%,white)]" />
-                            <div className="h-4 w-24 rounded-full bg-[color-mix(in_srgb,var(--primary-color)_18%,white)]" />
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            <main className="pt-32">
-                <section className="bg-slate-200 px-4 min-h-[60vh]">
-                    <div className="max-w-305 mx-auto flex h-full min-h-[60vh] flex-col justify-center py-20">
-                        <div className="h-12 w-full max-w-115 rounded-lg bg-white/70" />
-                        <div className="mt-4 h-12 w-full max-w-96 rounded-lg bg-white/60" />
-                        <div className="mt-5 h-5 w-full max-w-150 rounded-full bg-white/60" />
-                        <div className="mt-10 flex w-full max-w-220 flex-col gap-3 rounded-lg bg-white p-3 shadow-sm sm:flex-row">
-                            <div className="h-12 flex-1 rounded-md bg-gray-100" />
-                            <div className="h-12 flex-1 rounded-md bg-gray-100" />
-                            <div className="h-12 w-full rounded-md bg-primary sm:w-36" />
-                        </div>
-                    </div>
-                </section>
-
-                <section className="px-4 py-12">
-                    <div className="max-w-305 mx-auto">
-                        <div className="mb-6 h-8 w-48 rounded-md bg-gray-200" />
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                            {dealCards.map((_, index) => (
-                                <div key={index} className="overflow-hidden rounded-lg border border-gray-100 bg-white shadow-sm">
-                                    <div className="h-44 bg-gray-200" />
-                                    <div className="space-y-3 p-4">
-                                        <div className="h-5 w-3/4 rounded-md bg-gray-200" />
-                                        <div className="h-4 w-full rounded-md bg-gray-100" />
-                                        <div className="h-4 w-2/3 rounded-md bg-gray-100" />
-                                        <div className="flex items-center justify-between pt-2">
-                                            <div className="h-6 w-20 rounded-full bg-[color-mix(in_srgb,var(--primary-color)_18%,white)]" />
-                                            <div className="h-9 w-24 rounded-md bg-primary" />
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            </main>
         </div>
     );
 };
 
 export default Testing;
-
-
-
-
-
-{/* <script async src="https://www.googletagmanager.com/gtag/js?id=G-GDXTYQ4052"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-GDXTYQ4052');
-</script> */}

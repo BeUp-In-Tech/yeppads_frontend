@@ -36,11 +36,10 @@ const LoacationBadge = () => {
         const city = "Detroit";
         const state = "Mi";
 
-        const cityRegex = new RegExp(`^${city}$`, "i");
-        const stateRegex = new RegExp(`^${state}$`, "i");
-
         const first = suggestionData.data.find(
-            item => cityRegex.test(item.city) && stateRegex.test(item.state)
+            item =>
+                item.city.toLowerCase().includes(city.toLowerCase()) &&
+                item.state.toLowerCase() === state.toLowerCase()
         );
 
         if (!first) return;
