@@ -81,7 +81,7 @@ const LoacationBadge = () => {
 
     return (
         <>
-            <div className="relative z-10 my-3 flex w-fit max-w-[90vw] items-center gap-2 rounded-full border border-white/25 bg-white/15 px-3 sm:px-4 py-1.5 text-sm sm:text-base font-semibold text-white backdrop-blur-sm">
+            <div className="relative z-10 my-3 flex w-fit max-w-[70vw] sm:max-w-[90vw] items-center gap-1 sm:gap-2 rounded-full border border-white/25 bg-white/15 px-2 sm:px-4 py-1.5 text-sm sm:text-base font-semibold text-white backdrop-blur-sm">
                 {displayLabel ? (
                     <span className="truncate max-w-[44vw] sm:max-w-xs font-semibold leading-tight text-white">
                         {displayLabel}
