@@ -5,7 +5,9 @@ import { useGsapAnimations } from "../../../hooks/useGsapAnimations";
 import DealCard from "../../../components/shared/DealCard";
 const SearchDeals = ({ searchText }) => {
     const { latitude, longitude } = JSON.parse(localStorage.getItem("userLocation")) || {};
+    
     const { data: allDeals, isLoading } = useGetDealAllDealsQuery({ searchText, longitude, latitude });
+
     const queryText = searchText?.trim() || "";
     const searchValue = [queryText].filter(Boolean).join(" / ");
     const headingText = searchValue ? `Search result of '${searchValue}'` : "Search result";

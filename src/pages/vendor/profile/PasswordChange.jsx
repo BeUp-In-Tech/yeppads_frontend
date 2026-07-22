@@ -1,36 +1,32 @@
-import { Eye, EyeOff, Lock } from "lucide-react";
+import { Check, CircleCheckBig, Eye, EyeOff, Lock } from "lucide-react";
 import { useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useChangePasswordMutation } from "../../../features/auth/authApi";
 
-const PasswordChange = ({ setActiveTab }) => {
+const PasswordChange = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showNewPassword, setNewShowPassword] = useState(false);
-    const { register, handleSubmit, formState: { errors }, control } = useForm();
-    const [changePassword, { isLoading, error, isError }] = useChangePasswordMutation();
-
-    const oldpassword = useWatch({
-        control,
-        name: "oldPassword",
-    });
-
-    const newpassword = useWatch({
-        control,
-        name: "newPassword",
-    });
+    const [passwordChanged, setPasswordChanged] = useState(false);
+    const [submitError, setSubmitError] = useState("");
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const [changePassword, { isLoading }] = useChangePasswordMutation();
 
     const onSubmit = async (data) => {
-        changePassword({
-            oldPassword: data?.oldPassword,
-            newPassword: data?.newPassword,
-        });
-        setTimeout(() => {
-            setActiveTab('profile-details');
-        }, 1000);
-    };
+        setSubmitError("");
+        setPasswordChanged(false);
 
-    const oldPassLen = oldpassword?.length;
-    const newPassLen = newpassword?.length;
+        try {
+            await changePassword({
+                oldPassword: data?.oldPassword,
+                newPassword: data?.newPassword,
+            }).unwrap();
+
+            setPasswordChanged(true);
+            reset();
+        } catch (error) {
+            setSubmitError(error?.data?.message || error?.error || "Password change failed. Please try again.");
+        }
+    };
 
     return (
         <div>
@@ -81,15 +77,20 @@ const PasswordChange = ({ setActiveTab }) => {
                 )}
 
                 {
-                    newPassLen > 0 && oldPassLen > 0 && isError && <p className="text-sm text-red-500 ml-4">{error?.data?.message}</p>
+                    submitError && <p className="text-sm text-red-500 ml-4">{submitError}</p>
                 }
 
                 <button
                     type="submit"
-                    disabled={isLoading}
-                    className="w-full sm:w-60 bg-primary hover:bg-secondary text-white font-semibold py-3 rounded-full shadow-md cursor-pointer flex items-center justify-center">
+                    disabled={isLoading || passwordChanged}
+                    className="w-full sm:w-60 bg-primary hover:bg-secondary disabled:hover:bg-primary text-white font-semibold py-3 rounded-full shadow-md cursor-pointer disabled:cursor-default flex items-center justify-center gap-2">
                     {isLoading ? (
                         <div className="animate-spin border-2 border-t-4 border-white w-6 h-6 rounded-full"></div>
+                    ) : passwordChanged ? (
+                        <>
+                            <CircleCheckBig size={22} className="text-white"/>
+                            <span className="font-medium text-lg text-[#FFFFFF]">Password Changed</span>
+                        </>
                     ) : (
                         <span className="font-medium text-lg text-[#FFFFFF]">Change Password</span>
                     )}

@@ -15,7 +15,7 @@ const SearchBox = ({ handleSearch }) => {
                 aria-label="Search local deals"
                 onSubmit={handleSearchButton}
                 autoComplete="off"
-                className="flex w-full max-w-185 flex-nowrap items-center rounded-full bg-white px-2 py-2 sm:py-1.5 shadow-lg">
+                className="flex max-w-70 sm:max-w-185 flex-nowrap items-center rounded-full bg-white px-2 py-2 sm:py-1.5 shadow-lg">
                 <div className="flex min-w-0 flex-1 items-center gap-2 px-2 sm:gap-3 sm:px-4">
                     <Search className="h-4 w-4 shrink-0 text-gray-400 sm:h-5 sm:w-5" aria-hidden="true" />
                     <label htmlFor="deal-search" className="sr-only">Search ads</label>
@@ -31,7 +31,7 @@ const SearchBox = ({ handleSearch }) => {
                 </div>
                 <button
                     type="submit"
-                    className="hidden cursor-pointer sm:block bg-primary hover:bg-secondary text-white text-sm sm:text-base px-4 sm:px-8 py-2 sm:py-3 rounded-full font-medium transition-colors">
+                    className="hidden cursor-pointer sm:block bg-primary hover:bg-secondary text-white text-sm sm:text-base px-4 sm:px-8 py-2 md:py-3 rounded-full font-medium transition-colors">
                     Search
                 </button>
                 <button

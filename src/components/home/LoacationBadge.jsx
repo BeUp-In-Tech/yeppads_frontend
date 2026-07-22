@@ -33,8 +33,11 @@ const LoacationBadge = () => {
         // Already have a user-chosen location, don't overwrite
         if (getStoredLocation()?.mode === 'SELECTED_LOCATION' || getStoredLocation()?.mode === 'CURRENT_LOCATION') return;
 
-        const city = "Detroit";
-        const state = "Mi";
+       /*  const city = "Detroit";
+        const state = "Mi"; */
+
+        const city = "Bhola";
+        const state = "Barishal";
 
         const first = suggestionData.data.find(
             item =>
