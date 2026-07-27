@@ -27,11 +27,18 @@ export const locationApi = apiSlice.injectEndpoints({
                 credentials: "include",
             }),
         }),
+        getDefaultLocation: builder.query({
+            query: () => ({
+                url: `/locations/default`,
+                method: "GET",
+                credentials: "include",
+            }),
+        }),
     }),
 
 });
 
-export const { useSuggestionLocationQuery, useGetDownloadLocationUploadTemplateQuery, useAddLocationUploadCSVEXCLMutation } = locationApi;
+export const { useSuggestionLocationQuery, useGetDownloadLocationUploadTemplateQuery, useAddLocationUploadCSVEXCLMutation, useGetDefaultLocationQuery } = locationApi;
 // /dashboard/seed_cities/template
 
 // /dashboard/seed_cities

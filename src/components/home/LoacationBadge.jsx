@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import DynamicLocation from '../location/DynamicLocation';
 import LocationSetModal from './LocationSetModal';
-import { useSuggestionLocationQuery } from '../../features/location/locationApi';
+import { useGetDefaultLocationQuery } from '../../features/location/locationApi';
 
 const DEFAULT_SEARCH = import.meta.env.VITE_DEFAULT_SEARCH;
 
@@ -24,34 +24,42 @@ const LoacationBadge = () => {
     const [displayLabel, setDisplayLabel] = useState(stored?.label || '');
 
     // Fetch default location only when no user-chosen location exists
-    const { data: suggestionData, isSuccess } = useSuggestionLocationQuery(DEFAULT_SEARCH, {
-        skip: hasUserLocation,
-    });
+    // const { data: suggestionData, isSuccess } = useSuggestionLocationQuery(DEFAULT_SEARCH, {
+    //     skip: hasUserLocation,
+    // });
+
+    const { data: defaultLocation, isSuccess } = useGetDefaultLocationQuery(
+        { skip: hasUserLocation }
+    );
 
     useEffect(() => {
         if (!isSuccess) return;
         // Already have a user-chosen location, don't overwrite
         if (getStoredLocation()?.mode === 'SELECTED_LOCATION' || getStoredLocation()?.mode === 'CURRENT_LOCATION') return;
 
-        const city = "Detroit";
-        const state = "Mi";
+        // const city = "Detroit";
+        // const state = "Mi";
 
         // const city = "Bhola";
         // const state = "Barishal";
 
-        const first = suggestionData.data.find(
-            item =>
-                item.city.toLowerCase().includes(city.toLowerCase()) &&
-                item.state.toLowerCase() === state.toLowerCase()
-        );
+        // const first = suggestionData.data.find(
+        //     item =>
+        //         item.city.toLowerCase().includes(city.toLowerCase()) &&
+        //         item.state.toLowerCase() === state.toLowerCase()
+        // );
 
-        if (!first) return;
+        // if (!first) return;
 
-        const label = first.label || DEFAULT_SEARCH;
+        const city = defaultLocation?.data?.address?.city;
+        const state = defaultLocation?.data?.address?.state;
+        const country = defaultLocation?.data?.address?.country;
+
+        const label = `${city}, ${state}`;
         const params = {
-            city: first?.city,
-            state: first?.state,
-            country: first?.country,
+            city: city.toLowerCase(),
+            state: state.toLowerCase(),
+            country: country.toLowerCase(),
         };
 
         // Save as SELECTED_LOCATION so it can be overridden later
@@ -65,7 +73,7 @@ const LoacationBadge = () => {
 
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setDisplayLabel(label);
-    }, [isSuccess, suggestionData]);
+    }, [isSuccess, defaultLocation]);
 
     // Coords are only set when user explicitly picks "Use my current location"
     const storedCoords =
