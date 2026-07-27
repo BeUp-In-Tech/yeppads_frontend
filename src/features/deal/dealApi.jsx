@@ -74,8 +74,8 @@ export const dealApi = apiSlice.injectEndpoints({
             ],
         }),
         getDealAllDeals: builder.query({
-            query: ({ searchText, longitude, latitude }) => ({
-                url: `/service/deals/all_deals/${longitude}/${latitude}?searchTerm=${searchText}`,
+            query: ({ searchText }) => ({
+                url: `/service/deals/all_deals?searchTerm=${searchText}`,
                 method: "GET",
                 credentials: "include",
             }),
