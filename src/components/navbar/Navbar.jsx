@@ -144,8 +144,6 @@ const Navbar = () => {
                             {/* <button className='bg-primary py-2 px-5 rounded-md text-white'>Logo</button> */}
                             <img src={images.logoIocn} className='h-12 w-full' alt="Yepp Ads" />
                         </Link>
-
-                        <h2>Rakib</h2>
                     </div>
 
                     <div className='flex justify-between items-center gap-20'>
