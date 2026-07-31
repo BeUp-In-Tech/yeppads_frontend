@@ -6,7 +6,7 @@ import { useGetMyDealsQuery } from "../../../../features/deal/dealApi";
 import { DealCardSkeleton } from "../../../../components/skeleton/DealCardSkeleton";
 import Pagination from "../../../vendor/created-shop/components/Pagination";
 
-const LIMIT = 10;
+const LIMIT = 1000;
 
 const Deals = () => {
     const [activeTab, setActiveTab] = useState("promoted");
