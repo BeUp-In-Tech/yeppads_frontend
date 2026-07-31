@@ -1,17 +1,8 @@
-import { useEffect } from "react";
 import { CheckCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const PaymentSuccess = () => {
     const location = useLocation();
-
-    useEffect(() => {
-        if (window.gtag) {
-            window.gtag('event', 'conversion', {
-                'send_to': 'AW-999196271/JAQlCI33rdQcEO-MutwD'
-            });
-        }
-    }, []);
     const params = new URLSearchParams(location.search);
     const dealId = params.get("deal_id");
     const transectionId = params.get("tr_id");
