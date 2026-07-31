@@ -144,6 +144,8 @@ const Navbar = () => {
                             {/* <button className='bg-primary py-2 px-5 rounded-md text-white'>Logo</button> */}
                             <img src={images.logoIocn} className='h-12 w-full' alt="Yepp Ads" />
                         </Link>
+
+                        <h2>Rakib</h2>
                     </div>
 
                     <div className='flex justify-between items-center gap-20'>
@@ -238,7 +240,7 @@ const Navbar = () => {
                             Saved Deals
                         </NavLink>
                         {
-                            user?.role === 'ADMIN' && userInfo?.data?.role==='ADMIN' && <NavLink
+                            user?.role === 'ADMIN' && userInfo?.data?.role === 'ADMIN' && <NavLink
                                 to="/dashboard/admin-dashboard"
                                 className={({ isActive }) =>
                                     `rounded-lg px-4 py-3 text-base font-semibold tracking-wider transition-colors ${isActive ? "bg-[#E0F2FE] text-primary" : "text-[#262626] hover:bg-[#F0F9FF] hover:text-secondary"}`
@@ -247,7 +249,7 @@ const Navbar = () => {
                             </NavLink>
                         }
                         {
-                            user?.role === 'VENDOR' && userInfo?.data?.role==='VENDOR' && <NavLink
+                            user?.role === 'VENDOR' && userInfo?.data?.role === 'VENDOR' && <NavLink
                                 to="/shop-overview"
                                 className={({ isActive }) =>
                                     `rounded-lg px-4 py-3 text-base font-semibold tracking-wider transition-colors ${isActive ? "bg-[#E0F2FE] text-primary" : "text-[#262626] hover:bg-[#F0F9FF] hover:text-secondary"}`
