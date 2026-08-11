@@ -42,7 +42,7 @@ const Navbar = () => {
         { skip: !user?._id || user?.role === 'ADMIN' }
     );
     const [openNotificationPanel] = useOpenNotificationPanelMutation();
-    const { data: userInfo, isLoading } = useHandleCurrentLoggedInUserQuery();
+    const { data: userInfo, isLoading } = useHandleCurrentLoggedInUserQuery(undefined, { skip: !isAuthenticated });
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -79,7 +79,7 @@ const Navbar = () => {
     }, []);
 
     if (isLoading) {
-        return <NavbarLoadingSkeleton />
+        return <NavbarLoadingSkeleton />;
     }
 
     const unreadCount = Number(notificationData?.data?.unreadCount ?? notificationData?.unreadCount) || 0;

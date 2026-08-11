@@ -12,7 +12,7 @@ const PrivateRoute = ({ children }) => {
   const isLoggedIn = useAuth();
   const { data: currentUser, isLoading } = useHandleCurrentLoggedInUserQuery();
   const { user } = useSelector((state) => state?.auth);
-  const { data: shopDetails, isLoading:vendorLoadingDetails } = useGetVendorDetailsQuery(user?._id);
+  const { data: shopDetails, isLoading:vendorLoadingDetails } = useGetVendorDetailsQuery(user?._id, { skip: !user?._id });
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -21,12 +21,14 @@ const PrivateRoute = ({ children }) => {
     }
   }, [currentUser, dispatch]);
 
-  if(shopDetails?.data?.shop_approval === 'PENDING' || shopDetails?.data?.shop_approval === 'REJECTED'){
-    return <Navigate to="/approval" replace />;
-  }
-  
+  // ✅ Always check loading FIRST — before any redirect
+  // This prevents redirecting based on undefined/unloaded data
   if (isLoading || vendorLoadingDetails) {
     return <EmailVerifySkeleton />;
+  }
+
+  if(shopDetails?.data?.shop_approval === 'PENDING' || shopDetails?.data?.shop_approval === 'REJECTED'){
+    return <Navigate to="/approval" replace />;
   }
 
   if (!isLoggedIn || currentUser?.data?.role !== "VENDOR" || currentUser?.data?.isShopCreated !== true) {
