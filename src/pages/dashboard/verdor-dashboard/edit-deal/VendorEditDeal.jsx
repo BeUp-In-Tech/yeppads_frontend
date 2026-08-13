@@ -157,7 +157,8 @@ const VendorEditDeal = () => {
                 setOpenDropdown(true);
             }
         }
-    }, [dealDetail, reset]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dealDetail?.data, reset]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
