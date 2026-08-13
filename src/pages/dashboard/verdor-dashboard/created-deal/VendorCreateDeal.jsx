@@ -221,6 +221,7 @@ const VendorCreateDeal = () => {
             coupon_required: activeField === "no_required" ? false : true,
             nationwide: nationwide,
             available_in_location: selectedLocations,
+            available_location: selectedLocations,
         };
 
         if (data?.discountType === "PERCENT_OFF_PRICE") {

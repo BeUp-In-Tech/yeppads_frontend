@@ -310,6 +310,7 @@ const VendorEditDeal = () => {
             deletedTags: data?.deletedTags,
             description: data?.description,
             available_in_location: selectedLocations,
+            available_location: selectedLocations,
             nationwide: nationwide,
             coupon_required: activeField === "no_required" ? false : true,
             remove_qr: removeQr,
