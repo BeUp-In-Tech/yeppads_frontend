@@ -117,7 +117,7 @@ const VendorEditDeal = () => {
             };
 
             // Pre-populate location state
-            const locationIds = available_in_location?.map((outlet) => outlet?._id) || [];
+            const locationIds = available_in_location?.map((outlet) => outlet?._id || outlet) || [];
             setSelectedLocations(locationIds);
             setNationwide(dealNationwide || false);
 
