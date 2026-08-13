@@ -109,7 +109,7 @@ const VendorEditDeal = () => {
 
     useEffect(() => {
         if (dealDetail?.data) {
-            const { title, highlight, tags, description, regular_price, discount, discount_type, minimum_purchase, available_location, coupon, category, createdAt, promotedUntil, coupon_option, coupon_required, nationwide: dealNationwide } = dealDetail.data || {};
+            const { title, highlight, tags, description, regular_price, discount, discount_type, minimum_purchase, available_in_location, coupon, category, createdAt, promotedUntil, coupon_option, coupon_required, nationwide: dealNationwide } = dealDetail.data || {};
             const { qr, upc } = coupon_option || {};
             const formatDate = (date) => {
                 if (!date) return "";
@@ -117,7 +117,7 @@ const VendorEditDeal = () => {
             };
 
             // Pre-populate location state
-            const locationIds = available_location?.map((outlet) => outlet?._id) || [];
+            const locationIds = available_in_location?.map((outlet) => outlet?._id) || [];
             setSelectedLocations(locationIds);
             setNationwide(dealNationwide || false);
 
