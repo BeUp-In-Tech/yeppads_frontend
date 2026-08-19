@@ -10,15 +10,15 @@ const AdminRoute = ({ children }) => {
     return <div>Loading....</div>
   }
 
-  if (!user) {
+  if (!userInfo?.data) {
     return <Navigate to="/login" replace />;
   }
 
-  if (user?.role === 'VENDOR' || userInfo?.data?.role === 'VENDOR') {
+  if (userInfo?.data?.role === 'VENDOR') {
     return <Navigate to="/shop-overview" replace />;
   }
 
-  if (user?.role === 'ADMIN' || userInfo?.data?.role === 'ADMIN') {
+  if (userInfo?.data?.role === 'ADMIN') {
     return children ?? <Outlet />;
   }
   return <Navigate to="/shop-overview" replace />;

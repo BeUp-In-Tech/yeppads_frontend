@@ -22,7 +22,7 @@ const ShopcreateRoute = ({ children }) => {
     return <EmailVerifySkeleton />;
   }
 
-  if (!isLoggedIn || currentUser?.data?.role !== 'VENDOR') {
+  if (!currentUser?.data || currentUser?.data?.role !== 'VENDOR') {
     return <Navigate to="/login" replace />;
   }
 

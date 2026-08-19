@@ -9,10 +9,9 @@ import useAuth from './../hooks/useAuth';
 import { useGetVendorDetailsQuery } from "../features/shop/shopApi";
 
 const PrivateRoute = ({ children }) => {
-  const isLoggedIn = useAuth();
   const { data: currentUser, isLoading } = useHandleCurrentLoggedInUserQuery();
-  const { user } = useSelector((state) => state?.auth);
-  const { data: shopDetails, isLoading:vendorLoadingDetails } = useGetVendorDetailsQuery(user?._id, { skip: !user?._id });
+  const vendorId = currentUser?.data?._id;
+  const { data: shopDetails, isLoading:vendorLoadingDetails } = useGetVendorDetailsQuery(vendorId, { skip: !vendorId });
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,7 +30,7 @@ const PrivateRoute = ({ children }) => {
     return <Navigate to="/approval" replace />;
   }
 
-  if (!isLoggedIn || currentUser?.data?.role !== "VENDOR" || currentUser?.data?.isShopCreated !== true) {
+  if (!currentUser?.data || currentUser?.data?.role !== "VENDOR" || currentUser?.data?.isShopCreated !== true) {
     return <Navigate to="/vendor-created-shop" replace />;
   }
 
