@@ -23,11 +23,31 @@ export const categoriesApi = apiSlice.injectEndpoints({
             providesTags: ["Categories"],
         }),
         getCategoryDetails: builder.query({
-            query: ({ id, longitude, latitude, page = 100 }) => ({
-                url: `/service/c/${id}?lng=${longitude}&lat=${latitude}&sort=distance&page=${page}&limit=${1000}`,
-                method: "GET",
-                credentials: "include",
-            }),
+            query: ({ id, longitude, latitude, page = 1, limit = 1000, nationwide, locationMode, country, city, state, zip_code }) => {
+                let queryString = `?page=${page}&limit=${limit}&sort=distance`;
+
+                if (nationwide) {
+                    queryString += `&nationwide=true`;
+                } else {
+                    if (locationMode === 'SELECTED_LOCATION') {
+                        queryString += `&locationMode=${locationMode}`;
+                        if (country) queryString += `&country=${country}`;
+                        if (city) queryString += `&city=${city}`;
+                        if (state) queryString += `&state=${state}`;
+                        if (zip_code) queryString += `&zip_code=${zip_code}`;
+                    } else if (locationMode === 'CURRENT_LOCATION') {
+                        queryString += `&locationMode=${locationMode}`;
+                        if (latitude) queryString += `&lat=${latitude}`;
+                        if (longitude) queryString += `&lng=${longitude}`;
+                    }
+                }
+
+                return {
+                    url: `/service/c/${id}${queryString}`,
+                    method: "GET",
+                    credentials: "include",
+                };
+            },
             providesTags: (_result, _error, arg) => [
                 { type: "Category", id: arg.id },
             ],

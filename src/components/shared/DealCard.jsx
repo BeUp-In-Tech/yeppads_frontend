@@ -128,24 +128,23 @@ const DealCard = ({ deal, shopName, handleDeleteWistListId, totalViews }) => {
                 <div className="mt-4 flex min-w-0 flex-col items-start justify-between gap-3">
                     <div className="flex min-w-0 items-baseline gap-x-1 gap-y-0.5">
                         {
-                            discount_type === 'NO_PRICE' || discount_type === 'CUSTOM_DISCOUNT' || discount_type === 'PERCENT_OFF_TOTAL' ? (
-                                <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-bold text-primary">
-                                    {discount_type === 'NO_PRICE' && ''}
-                                    {discount_type === 'CUSTOM_DISCOUNT' && ''}
-                                    {discount_type === 'PERCENT_OFF_TOTAL' && ``}
-                                    {discount_type === 'FIXED_PRICE' && ``}
-                                </span>
-                            ) : (
-                                <>
-                                    <span className="text-xl sm:text-2xl font-bold leading-none text-[#262626]">
-                                        ${finalPrice.toFixed(2)}
+                            (discount_type === 'NO_PRICE' || discount_type === 'CUSTOM_DISCOUNT') ? null : (
+                                discount_type === 'PERCENT_OFF_TOTAL' ? (
+                                    <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-bold text-primary">
+                                        {label}
                                     </span>
-                                    {hasDiscount && (
-                                        <span className="text-sm text-[#A3A3A3] font-medium line-through">
-                                            ${price.toFixed(2)}
+                                ) : (
+                                    <>
+                                        <span className="text-xl sm:text-2xl font-bold leading-none text-[#262626]">
+                                            ${finalPrice.toFixed(2)}
                                         </span>
-                                    )}
-                                </>
+                                        {hasDiscount && (
+                                            <span className="text-sm text-[#A3A3A3] font-medium line-through">
+                                                ${price.toFixed(2)}
+                                            </span>
+                                        )}
+                                    </>
+                                )
                             )
                         }
                     </div>

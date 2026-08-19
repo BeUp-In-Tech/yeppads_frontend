@@ -9,6 +9,14 @@ const DEALS_PER_BATCH = Number(import.meta.env.VITE_ROWS_PER_PAGE);
 const CategorieDetails = () => {
     const { id } = useParams();
     const { latitude, longitude } = JSON.parse(localStorage.getItem("userLocation")) || {};
+    const readStoredLocation = () => {
+        try {
+            return JSON.parse(localStorage.getItem('location') || '{}');
+        } catch {
+            return {};
+        }
+    };
+    const website_location = readStoredLocation();
     const [visibleState, setVisibleState] = useState({
         count: DEALS_PER_BATCH,
         listKey: "",
@@ -23,6 +31,12 @@ const CategorieDetails = () => {
         latitude,
         limit: DEALS_PER_BATCH,
         page: 1,
+        locationMode: website_location?.mode ?? 'SELECTED_LOCATION',
+        city: website_location?.data?.city,
+        state: website_location?.data?.state,
+        country: website_location?.data?.country,
+        zip_code: website_location?.data?.zip_code,
+        nationwide: false,
     });
     const allDeals = useMemo(() => categories?.data?.deals ?? [], [categories?.data?.deals]);
     const listKey = `${id ?? ""}-${latitude ?? ""}-${longitude ?? ""}`;
