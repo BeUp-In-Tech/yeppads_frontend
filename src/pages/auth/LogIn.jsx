@@ -65,7 +65,11 @@ const LogIn = () => {
     }, [password.length, reset]);
 
     const onSubmit = async (data) => {
-        await handleLogin(data).unwrap();
+        try {
+            await handleLogin(data).unwrap();
+        } catch (err) {
+            console.error("Login failed:", err);
+        }
     };
     return (
         <div className="flex min-h-screen w-full" data-animate="hero">

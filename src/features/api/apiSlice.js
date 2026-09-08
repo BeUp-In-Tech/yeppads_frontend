@@ -4,6 +4,7 @@ import { baseQueryWithErrorHandling } from "./errorHandling";
 
 export const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_BASE_URL,
+  timeout: 15000,
   credentials: "include",
   prepareHeaders: (headers) => {
     // Global headers
