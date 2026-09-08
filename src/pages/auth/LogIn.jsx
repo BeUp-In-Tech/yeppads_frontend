@@ -37,8 +37,14 @@ const LogIn = () => {
     useEffect(() => {
         if (!user) return;
         const registerToken = async () => {
-            const fcmToken = await generateFcmTokenData();
-            await userRegisterFcmToken(fcmToken);
+            try {
+                const fcmToken = await generateFcmTokenData();
+                if (fcmToken) {
+                    await userRegisterFcmToken(fcmToken);
+                }
+            } catch (err) {
+                console.error("FCM Token registration failed:", err);
+            }
         };
         registerToken();
 

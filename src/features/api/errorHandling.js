@@ -9,38 +9,46 @@ export const baseQueryWithErrorHandling = async (args, api, extraOptions) => {
     const statusCode = result?.error?.status;
 
     const isExpired =
-        statusCode === 500 &&
-        statusMessage === "jwt expired";
+        statusCode === 401 ||
+        (statusCode === 500 && statusMessage === "jwt expired");
 
-    if (refreshToken && isExpired) {
+    if (isExpired) {
+        if (refreshToken) {
+            const refreshResult = await baseQuery(
+                {
+                    url: "/auth/generate_token",
+                    method: "POST",
+                    body: { refreshToken },
+                },
+                api,
+                extraOptions
+            );
 
-        const refreshResult = await baseQuery(
-            {
-                url: "/auth/generate_token",
-                method: "POST",
-                body: { refreshToken },
-            },
-            api,
-            extraOptions
-        );
+            if (refreshResult?.data?.data) {
+                const accessToken = refreshResult.data.data.newAccessToken;
+                const newRefreshToken = refreshResult.data.data.newRefreshToken;
 
-        if (refreshResult?.data?.data) {
+                Cookies.set("accessToken", accessToken, {
+                    expires: 5,
+                    secure: false,
+                    sameSite: "Strict",
+                });
 
-            const accessToken = refreshResult.data.data.newAccessToken;
-            const newRefreshToken = refreshResult.data.data.newRefreshToken;
+                Cookies.set("refreshToken", newRefreshToken, {
+                    expires: 5,
+                    secure: false,
+                    sameSite: "Strict",
+                });
+                result = await baseQuery(args, api, extraOptions);
+                return result;
+            }
+        }
 
-            Cookies.set("accessToken", accessToken, {
-                expires: 5,
-                secure: false,
-                sameSite: "Strict",
-            });
-
-            Cookies.set("refreshToken", newRefreshToken, {
-                expires: 5,
-                secure: false,
-                sameSite: "Strict",
-            });
-            result = await baseQuery(args, api, extraOptions)
+        // If refreshToken is missing, invalid, or expired -> Clear cookies and force redirect to login
+        Cookies.remove("accessToken", { path: "/" });
+        Cookies.remove("refreshToken", { path: "/" });
+        if (window.location.pathname !== "/login") {
+            window.location.href = "/login";
         }
     }
 
