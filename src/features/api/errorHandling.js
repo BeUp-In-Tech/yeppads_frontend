@@ -44,9 +44,12 @@ export const baseQueryWithErrorHandling = async (args, api, extraOptions) => {
             }
         }
 
-        // If refreshToken is missing, invalid, or expired -> Clear cookies and force redirect to login
         Cookies.remove("accessToken", { path: "/" });
         Cookies.remove("refreshToken", { path: "/" });
+
+
+        localStorage.removeItem("persist:root");
+
         if (window.location.pathname !== "/login") {
             window.location.href = "/login";
         }

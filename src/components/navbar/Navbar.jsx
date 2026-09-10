@@ -11,6 +11,7 @@ import Cookies from "js-cookie";
 import { persistor } from '../../app/store';
 import { useGetAllNotificaitonQuery, useOpenNotificationPanelMutation } from '../../features/notification/notificaitonApi';
 import { useHandleCurrentLoggedInUserQuery } from '../../features/auth/authApi';
+import apiSlice from '../../features/api/apiSlice';
 import NavbarLoadingSkeleton from '../skeleton/dashboard/NavbarLoadingSkeleton';
 
 const getSavedDealsCount = () => {
@@ -94,6 +95,7 @@ const Navbar = () => {
 
     const hanldeLogOut = async () => {
         dispatch(userLoggedOut());
+        dispatch(apiSlice.util.resetApiState());
 
         Cookies.remove("accessToken", {
             secure: false,
@@ -109,7 +111,6 @@ const Navbar = () => {
 
         await persistor.flush();
         await persistor.purge();
-        window.location.reload();
         navigate('/login');
     }
 

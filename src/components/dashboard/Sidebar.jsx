@@ -5,6 +5,7 @@ import { userLoggedOut } from '../../features/auth/authSlice';
 import { images } from '../../assets/image';
 import Cookies from "js-cookie";
 import { persistor } from '../../app/store';
+import apiSlice from '../../features/api/apiSlice';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
     const dispatch = useDispatch();
@@ -12,6 +13,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
     const logOut = async () => {
         dispatch(userLoggedOut());
+        dispatch(apiSlice.util.resetApiState());
         Cookies.remove("accessToken", {
             secure: false,
             sameSite: "Strict",
@@ -24,7 +26,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         });
         await persistor.flush();
         await persistor.purge();
-        window.location.reload();
         navigate('/login');
     }
     return (
