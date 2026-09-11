@@ -47,6 +47,9 @@ export const baseQueryWithErrorHandling = async (args, api, extraOptions) => {
         Cookies.remove("accessToken", { path: "/" });
         Cookies.remove("refreshToken", { path: "/" });
 
+        // Dispatch logout to clear in-memory state
+        api.dispatch({ type: "auth/userLoggedOut" });
+        api.dispatch({ type: "api/resetApiState" });
 
         localStorage.removeItem("persist:root");
 

@@ -8,6 +8,7 @@ import { saveTokensAndFetchUser, useHandleLoginMutation } from '../../features/a
 import { useDispatch, useSelector } from 'react-redux'
 import { generateFcmTokenData } from '../../lib/fcmtoken'
 import { useUserRegisterFcmTokenMutation } from '../../features/notification/notificaitonApi'
+import Cookies from 'js-cookie'
 
 const LogIn = () => {
     const dispatch = useDispatch();
@@ -23,6 +24,8 @@ const LogIn = () => {
     const { user } = useSelector((state) => state?.auth);
     const password = watch("password", "");
 
+    const token = Cookies.get("accessToken");
+
     // google and apple authoraization handdling
     useEffect(() => {
         if (accessToken && refreshToken) {
@@ -35,7 +38,7 @@ const LogIn = () => {
     }, [accessToken, refreshToken, dispatch]);
 
     useEffect(() => {
-        if (!user) return;
+        if (!user || !token) return;
         const registerToken = async () => {
             try {
                 const fcmToken = await generateFcmTokenData();
@@ -58,7 +61,7 @@ const LogIn = () => {
             navigate("/vendor-created-shop");
         }
 
-    }, [user, navigate, userRegisterFcmToken]);
+    }, [user, token, navigate, userRegisterFcmToken]);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
