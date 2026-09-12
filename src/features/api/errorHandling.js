@@ -29,13 +29,13 @@ export const baseQueryWithErrorHandling = async (args, api, extraOptions) => {
                 const newRefreshToken = refreshResult.data.data.newRefreshToken;
 
                 Cookies.set("accessToken", accessToken, {
-                    expires: 5,
+                    expires: 30,
                     secure: false,
                     sameSite: "Strict",
                 });
 
                 Cookies.set("refreshToken", newRefreshToken, {
-                    expires: 5,
+                    expires: 30,
                     secure: false,
                     sameSite: "Strict",
                 });
