@@ -8,7 +8,7 @@ import useAuth from '../../hooks/useAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { userLoggedOut } from '../../features/auth/authSlice';
 import Cookies from "js-cookie";
-import { persistor } from '../../app/store';
+
 import { useGetAllNotificaitonQuery, useOpenNotificationPanelMutation } from '../../features/notification/notificaitonApi';
 import { useHandleCurrentLoggedInUserQuery } from '../../features/auth/authApi';
 import apiSlice from '../../features/api/apiSlice';
@@ -109,8 +109,6 @@ const Navbar = () => {
             path: "/",
         });
 
-        await persistor.flush();
-        await persistor.purge();
         navigate('/login');
     }
 

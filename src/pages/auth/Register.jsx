@@ -6,11 +6,13 @@ import bgImage from '../../assets/images/authImage.jpg'
 import { useEffect, useState } from 'react'
 import SocilaLink from './SocilaLink'
 import { useHandleRegisterMutation } from '../../features/auth/authApi'
+import AuthSkeleton from '../../components/skeleton/AuthSkeleton'
 
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState(false);
     const [showLegalModal, setShowLegalModal] = useState(false);
+    const [pageLoading, setPageLoading] = useState(true);
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors }, watch } = useForm();
     const [handleRegister, { isLoading, error }] = useHandleRegisterMutation();
@@ -18,6 +20,10 @@ const Register = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        const timer = setTimeout(() => {
+            setPageLoading(false);
+        }, 500);
+        return () => clearTimeout(timer);
     }, []);
 
     const onSubmit = async (data) => {
@@ -33,6 +39,10 @@ const Register = () => {
         localStorage.setItem("email", email);
         navigate('/verificationcode');
     };
+
+    if (pageLoading) {
+        return <AuthSkeleton />;
+    }
 
     return (
         <>

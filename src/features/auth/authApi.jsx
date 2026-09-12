@@ -6,13 +6,13 @@ export const saveTokensAndFetchUser = async (tokens, dispatch) => {
   const { accessToken, refreshToken } = tokens;
 
   Cookies.set("accessToken", accessToken, {
-    expires: 5,
+    expires: 30,
     secure: false,
     sameSite: "Strict",
   });
 
   Cookies.set("refreshToken", refreshToken, {
-    expires: 5,
+    expires: 30,
     secure: false,
     sameSite: "Strict",
   });

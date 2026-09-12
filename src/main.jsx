@@ -1,12 +1,10 @@
 import React, { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import { PersistGate } from "redux-persist/integration/react";
 import AppRoutes from './routes/Route.jsx'
 import { Provider } from 'react-redux'
-import { persistor, store } from './app/store.js'
+import { store } from './app/store.js'
 import { Toaster } from 'react-hot-toast'
-import InitialPageLoader from './components/skeleton/InitialPageLoader.jsx'
 import ReactGA from 'react-ga4'
 
 // Measurement ID
@@ -26,10 +24,8 @@ if ('serviceWorker' in navigator) {
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
-      <PersistGate loading={<InitialPageLoader />} persistor={persistor}>
-        <AppRoutes />
-        <Toaster position="top-middle" reverseOrder={false} />
-      </PersistGate>
+      <AppRoutes />
+      <Toaster position="top-middle" reverseOrder={false} />
     </Provider>
   </StrictMode>
 )

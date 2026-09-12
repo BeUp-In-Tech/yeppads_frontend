@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { generateFcmTokenData } from '../../lib/fcmtoken'
 import { useUserRegisterFcmTokenMutation } from '../../features/notification/notificaitonApi'
 import Cookies from 'js-cookie'
+import AuthSkeleton from '../../components/skeleton/AuthSkeleton'
 
 const LogIn = () => {
     const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const LogIn = () => {
     const accessToken = params.get("access");
     const refreshToken = params.get("refresh");
     const [showPassword, setShowPassword] = useState(false);
+    const [pageLoading, setPageLoading] = useState(true);
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const [handleLogin, { isLoading, error, reset }] = useHandleLoginMutation();
     const [userRegisterFcmToken] = useUserRegisterFcmTokenMutation();
@@ -65,6 +67,10 @@ const LogIn = () => {
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
+        const timer = setTimeout(() => {
+            setPageLoading(false);
+        }, 500);
+        return () => clearTimeout(timer);
     }, []);
 
     useEffect(() => {
@@ -80,6 +86,11 @@ const LogIn = () => {
             console.error("Login failed:", err);
         }
     };
+
+    if (pageLoading) {
+        return <AuthSkeleton />;
+    }
+
     return (
         <div className="flex min-h-screen w-full" data-animate="hero">
             <div

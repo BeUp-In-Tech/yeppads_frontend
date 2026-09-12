@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { userLoggedOut } from '../../features/auth/authSlice';
 import { images } from '../../assets/image';
 import Cookies from "js-cookie";
-import { persistor } from '../../app/store';
+
 import apiSlice from '../../features/api/apiSlice';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
@@ -24,8 +24,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             sameSite: "Strict",
             path: "/",
         });
-        await persistor.flush();
-        await persistor.purge();
         navigate('/login');
     }
     return (
