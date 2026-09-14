@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "start": "vite preview --port 3000 --host 0.0.0.0",
+    "dev": "node init && vite",
+    "build": "node init && vite build",
+    "start": "node init && vite preview --port 3000 --host 0.0.0.0",
     "lint": "eslint .",
     "preview": "vite preview"
   },
