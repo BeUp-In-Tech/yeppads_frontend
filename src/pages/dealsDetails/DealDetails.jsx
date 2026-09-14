@@ -18,7 +18,7 @@ const DealDetails = () => {
     const { id } = useParams();
     const { latitude, longitude } = JSON.parse(localStorage.getItem("userLocation")) || {};
     const { data: deal, isLoading, isError } = useGetDealDetailsQuery({ id, longitude, latitude }, {
-        skip: !id
+        skip: !id || id === 'undefined'
     });
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const animationScopeRef = useGsapAnimations(`deal-details-${id}-${deal?.data?._id ?? ""}`);

@@ -101,15 +101,11 @@ const VendorCreateDeal = () => {
     }, [upcPreview]);
 
     useEffect(() => {
-        if (isSuccess) {
-            navigate(`/create-deal-plan/${paymentId}`);
-        }
         if (error) {
             const message = error?.data?.message || "Deal creation failed!";
             console.error(message);
         }
-
-    }, [navigate, isSuccess, error, paymentId]);
+    }, [error]);
 
     const disabledPricingInputClasses = "disabled:cursor-not-allowed disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-400";
 
@@ -266,7 +262,16 @@ const VendorCreateDeal = () => {
         }
 
         const res = await createNewDeal(formData);
-        setPaymentId(res?.data?.data?._id);
+        
+        if (res.data) {
+            const dealId = res.data?.data?._id || res.data?._id || res.data?.deal?._id;
+            setPaymentId(dealId);
+            if (dealId) {
+                navigate(`/create-deal-plan/${dealId}`);
+            } else {
+                toast.error("Deal created but ID is missing in response!");
+            }
+        }
     };
 
     const onInvalid = () => {

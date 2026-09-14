@@ -10,6 +10,7 @@ import { generateFcmTokenData } from '../../lib/fcmtoken'
 import { useUserRegisterFcmTokenMutation } from '../../features/notification/notificaitonApi'
 import Cookies from 'js-cookie'
 import AuthSkeleton from '../../components/skeleton/AuthSkeleton'
+import toast from 'react-hot-toast'
 
 const LogIn = () => {
     const dispatch = useDispatch();
@@ -84,6 +85,7 @@ const LogIn = () => {
             await handleLogin(data).unwrap();
         } catch (err) {
             console.error("Login failed:", err);
+            toast.error(err?.data?.message || "Login failed. Please check your credentials.");
         }
     };
 
@@ -168,9 +170,11 @@ const LogIn = () => {
                             <p className="text-sm text-red-500 ml-4">{errors.password.message}</p>
                         )}
 
-                        {password.length !== 0 && <div className='ml-2'>
-                            <p className='text-red-500 text-[15px]'>{error?.data?.message}</p>
-                        </div>}
+                        {password.length !== 0 && error?.data?.message && (
+                            <div className='ml-2'>
+                                <p className='text-red-500 text-[15px]'>{error?.data?.message}</p>
+                            </div>
+                        )}
 
                         <div className="text-right">
                             <Link to="/forgetpassword" className="text-sm text-primary font-medium hover:underline">

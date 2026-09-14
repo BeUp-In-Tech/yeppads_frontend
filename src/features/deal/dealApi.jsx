@@ -2,6 +2,7 @@ import apiSlice from "../api/apiSlice";
 
 
 export const dealApi = apiSlice.injectEndpoints({
+    overrideExisting: true,
     endpoints: (builder) => ({
         createNewDeal: builder.mutation({
             query: (data) => ({
@@ -54,11 +55,18 @@ export const dealApi = apiSlice.injectEndpoints({
             providesTags: ["Deals"],
         }),
         getDealDetails: builder.query({
-            query: ({ id, longitude, latitude }) => ({
-                url: `/service/${id}/${longitude}/${latitude}`,
-                method: "GET",
-                credentials: "include",
-            }),
+            queryFn: async (arg, queryApi, extraOptions, baseQuery) => {
+                const { id, longitude, latitude } = arg;
+                if (!id || id === "undefined" || id === "null") {
+                    return { error: { status: 400, data: { message: "Invalid ID blocked by frontend" } } };
+                }
+                const result = await baseQuery({
+                    url: `/service/${id}/${longitude}/${latitude}`,
+                    method: "GET",
+                    credentials: "include",
+                });
+                return result;
+            },
             providesTags: (result, error, arg) => [
                 { type: "Deal", id: arg.id },
             ],
@@ -91,7 +99,7 @@ export const dealApi = apiSlice.injectEndpoints({
         }),
         getMyDeals: builder.query({
             query: ({ openTab, page, limit }) => ({
-                url: `/service/my_deals?deal_filter=${openTab}&join=shop-business_name|business_logo,category-category_name|category_logo&fields=title,deal_status,ban_reason,images,regular_price,discount,discount_type,custom_discount,promotedUntil,activePromotion&page=${page}&limit=${limit}`,
+                url: `/service/my_deals?deal_filter=${openTab}&join=shop-business_name|business_logo,category-category_name|category_logo&fields=_id,title,deal_status,ban_reason,images,regular_price,discount,discount_type,custom_discount,promotedUntil,activePromotion&page=${page}&limit=${limit}`,
                 method: "GET",
                 credentials: "include",
             }),

@@ -7,6 +7,7 @@ import PromoteDealSkeleton from "../../../../components/skeleton/PromoteDealSkel
 import { useGetDealDetailsQuery } from "../../../../features/deal/dealApi";
 import { useGetCouponCodeQuery } from "../../../../features/coupon/couponApi";
 import { useHandlePaymentMutation } from "../../../../features/payment/paymentApi";
+import toast from "react-hot-toast";
 
 const toSafeNumber = (value, fallback = 0) => {
     const numberValue = Number(value);
@@ -28,7 +29,9 @@ const CreateDealPlan = () => {
     const selectedPlan = watch("plan");
 
     const { data: plans, isLoading } = useGetAllPlanQuery();
-    const { data: dealDetails, isLoading: dealDetailsLoading } = useGetDealDetailsQuery({ id, longitude, latitude });
+    const { data: dealDetails, isLoading: dealDetailsLoading } = useGetDealDetailsQuery({ id, longitude, latitude }, {
+        skip: !id || id === 'undefined'
+    });
     const { data: couponCode, isLoading: couponCodeLaoding, isSuccess, error } = useGetCouponCodeQuery(code, {
         skip: !code || code.length < 1,
     });
@@ -43,6 +46,23 @@ const CreateDealPlan = () => {
             setValue("plan", plans.data[0]._id);
         }
     }, [plans, selectedPlan, setValue]);
+
+    if (!id || id === 'undefined') {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50 pt-28 pb-16">
+                <div className="text-center bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                    <h2 className="text-xl font-bold text-red-500 mb-2">Invalid Deal ID</h2>
+                    <p className="text-gray-600 mb-6">The deal you are trying to promote could not be found or the ID is invalid.</p>
+                    <button 
+                        onClick={() => window.location.href = '/my-deals'} 
+                        className="bg-primary text-white px-6 py-2.5 rounded-full font-semibold hover:bg-secondary transition-colors"
+                    >
+                        Go to My Ads
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     if (isLoading || dealDetailsLoading) {
         return <PromoteDealSkeleton />;
@@ -64,13 +84,29 @@ const CreateDealPlan = () => {
     const discountPrice = (planPrice * discountPercentage) / 100;
     const finalPrice = planPrice - discountPrice;
     const onSubmit = async () => {
-        const finalData = {
-            planId: selectedPlan,
-            dealId: id,
-            voucher: code,
-        };
-        const res = await handlePayment(finalData);
-        window.location.href = res?.data?.data?.checkout_url;
+        try {
+            const finalData = {
+                planId: selectedPlan,
+                dealId: id,
+                voucher: code,
+            };
+            const res = await handlePayment(finalData);
+
+            if (res.error) {
+                toast.error(res.error?.data?.message || "Payment failed. Please try again.");
+                return;
+            }
+
+            const checkoutUrl = res?.data?.data?.checkout_url || res?.data?.checkout_url;
+
+            if (checkoutUrl) {
+                window.location.href = checkoutUrl;
+            } else {
+                toast.error("Checkout URL not found in response.");
+            }
+        } catch (error) {
+            toast.error("Something went wrong during checkout.");
+        }
     };
 
     return (

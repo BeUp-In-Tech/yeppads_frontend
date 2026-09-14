@@ -65,7 +65,9 @@ const VendorEditDeal = () => {
     const [selectedLocations, setSelectedLocations] = useState([]);
     const [nationwide, setNationwide] = useState(false);
     const locationDropdownRef = useRef(null);
-    const { data: dealDetail, isLoading: dealDetailsLoading, isError } = useGetDealDetailsQuery({ id, longitude, latitude });
+    const { data: dealDetail, isLoading: dealDetailsLoading, isError } = useGetDealDetailsQuery({ id, longitude, latitude }, {
+        skip: !id || id === 'undefined'
+    });
     const { data: shopDetails, isLoading: shopLoading } = useGetVendorDetailsQuery(user?._id);
 
     const { register, handleSubmit, watch, formState: { errors }, setValue, reset, clearErrors, setError, getValues, trigger } = useForm({
@@ -162,7 +164,18 @@ const VendorEditDeal = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, []);
+    }, [id]);
+
+    if (!id || id === 'undefined') {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
+                <div className="text-center p-8">
+                    <h2 className="text-2xl font-bold text-red-500 mb-2">Invalid Ad ID</h2>
+                    <p className="text-gray-600 mb-6">The ad you are trying to edit could not be found or the ID is invalid.</p>
+                </div>
+            </div>
+        );
+    }
 
     useEffect(() => {
         if (hasCouponCodeValue({
