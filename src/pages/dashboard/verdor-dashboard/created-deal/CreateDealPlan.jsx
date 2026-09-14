@@ -98,11 +98,12 @@ const CreateDealPlan = () => {
             }
 
             const checkoutUrl = res?.data?.data?.checkout_url || res?.data?.checkout_url;
+            console.log("PAYMENT API RESPONSE:", res);
 
-            if (checkoutUrl) {
+            if (checkoutUrl && checkoutUrl !== "undefined") {
                 window.location.href = checkoutUrl;
             } else {
-                toast.error("Checkout URL not found in response.");
+                toast.error("Backend error: Stripe checkout URL is missing or invalid!");
             }
         } catch (error) {
             toast.error("Something went wrong during checkout.");
